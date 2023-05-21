@@ -9,6 +9,5 @@ public class WindowsSoundHandler {
         for (Mixer.Info info : mixerInfos){
             System.out.println(info.toString());
         }
-        gay
     }
 }
