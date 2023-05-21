@@ -24,7 +24,7 @@ public class ArduinoThreadHandler implements Runnable {
         port = SerialPort.getCommPort(portName);
         port.setComPortParameters(9600, 8, 1, 0);
         port.setComPortTimeouts(SerialPort.TIMEOUT_NONBLOCKING, 0, 0);
-        if(port.openPort()) {
+        if (port.openPort()) {
             System.out.println("Successfully opened port " + portName);
         } else {
             System.out.println("Failed to open port " + portName);
@@ -62,6 +62,7 @@ public class ArduinoThreadHandler implements Runnable {
 
                 // Each input line is formatted as "A0|A1|A2|A3|A4"
                 String inputLine = getLine();
+                InputHandler.getInstance().handleInput(inputLine);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,7 +73,7 @@ public class ArduinoThreadHandler implements Runnable {
      * Reads a single byte from the Arduino. Waits to read if there is no data available.
      * @return The byte read from the Arduino.
      */
-    private byte readWithWait(){
+    private byte readWithWait() {
         while (port.bytesAvailable() == 0) {
             try {
                 Thread.sleep(10);
@@ -89,7 +90,7 @@ public class ArduinoThreadHandler implements Runnable {
      * Gets a line from the Arduino.
      * @return The line read from the Arduino.
      */
-    private String getLine(){
+    private String getLine() {
         // Each input line is received as "[A0|A1|A2|A3|A4]"
         char currentChar = '?';
         // Wait for the start of the input line
@@ -106,5 +107,4 @@ public class ArduinoThreadHandler implements Runnable {
         System.out.println(inputLine);
         return inputLine.substring(0, inputLine.length() - 1); // Remove the trailing ']'
     }
-
 }
